@@ -1,8 +1,8 @@
 # (https://cloud.google.com/kubernetes-engine/docs/how-to/batch/managing-clusters)
 # Create install script for Batch on GKE  (./install.sh)
 ######################################################################################
-DEVSHELL_PROJECT_ID="qwiklabs-gcp-ml-0bc583e3798d" # Insert project ID. Sed it on the program script
-EMAIL="student-00-9abd4a185af3@qwiklabs.net" # Insert email. Sed it on the main program script
+DEVSHELL_PROJECT_ID="REPLACE_PROJECTID" # Insert project ID. Sed it on the program script
+EMAIL="REPLACE_EMAIL" # Insert email. Sed it on the main program script
 
 gcloud auth login
 
