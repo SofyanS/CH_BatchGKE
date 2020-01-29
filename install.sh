@@ -52,24 +52,16 @@ gcloud iam service-accounts add-iam-policy-binding \
 kubectl annotate serviceaccount --namespace kube-system kbatch-controllers-k8s-sa \
  iam.gke.io/gcp-service-account=kbatch-controllers-gcloud-sa@$DEVSHELL_PROJECT_ID.iam.gserviceaccount.com
 
-
-# Install Kbatch and ksub
-cd kbatch-tar
+###########################
+# Install Kbatch and ksub #
+###########################
+cd Kbatch-tar
 sed -i "s~<kbatch-project-id>~$DEVSHELL_PROJECT_ID~g" config/kbatch-config.yaml
 kubectl create configmap --from-file config/kbatch-config.yaml -n kube-system kbatch-config
 gcloud compute machine-types list --filter="zone:us-central1-a" --format json > ./machine_types.json
-kubectl create configmap --from-file ./machine_types.json -n kube-system kbatch-machine-types
+kubectl create configmap --from-file machine_types.json -n kube-system kbatch-machine-types
 
 # Install batch custom resource definitions
 kubectl apply -f install/01-crds.yaml
 kubectl apply -f install/02-admission.yaml
 kubectl apply -f install/03-controller.yaml
-
-# Enable ksub to use your user crednetials for API Access
-gcloud auth application-default logins
-
-# Initialize Ksub
-./ksub --config --create-default
-
-# Add the default values for projectID, clusterName, and, if you are not operating in the default namespace, namespace in .ksubrc
-# nano ~/.ksubrc -> Later I can just sed this file once I see what it generates

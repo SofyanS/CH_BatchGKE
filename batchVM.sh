@@ -2,8 +2,10 @@
 sudo su
 yes | yum install nano
 git clone https://github.com/SofyanS/CH_BatchGKE.git
-DEVSHELL_PROJECT_ID="qwiklabs-gcp-01-a9b5651062a2" # Insert project ID
-EMAIL="student-01-dd4c729d720b@qwiklabs.netstudent-01-dd4c729d720b@qwiklabs.net" # Insert Email
+cd CH_BatchGKE
+git clone https://github.com/GoogleCloudPlatform/Kbatch.git
+DEVSHELL_PROJECT_ID="qwiklabs-gcp-01-27e7c2ce60e6" # Insert project ID
+EMAIL="student-01-952135633b74@qwiklabs.net" # Insert Email
 
 # Mount Filestore at /mnt/filestore #
 mkdir /mnt/filestore
@@ -16,10 +18,23 @@ mount --source $FILESTORE_IP:/fsname --target /mnt/filestore
 # Install batch on GKE, Ksub, and create cluster
 sed -i "s~REPLACE_PROJECTID~$DEVSHELL_PROJECT_ID~g" install.sh
 sed -i "s~REPLACE_EMAIL~$DEVSHELL_PROJECT_ID~g" install.sh
+
+# Manually run for now
 ./install.sh
-git clone https://github.com/GoogleCloudPlatform/Kbatch.git
 
-# Add the default values for projectID, clusterName, and, if you are not operating in the default namespace, namespace in .ksubrc:
-# After running ./ksub --config --create-default.
-# nano ~/.ksubrc
+# Set namespace to kube-system for debugging
+kubectl config set-context --current --namespace=kube-system
 
+
+# Enable ksub to use your user credentials for API Access
+gcloud auth application-default login
+
+# Initialize Ksub
+./ksub --config --create-default
+
+# Add the default values for projectID, clusterName, namespace
+# namespace is $DEVSHELL_PROJECT_ID.svc.id.goog OR kube-system
+nano ~/.ksubrc # Later I can just sed this file once I see what it generates
+
+# set up mount points
+./ksub --config --add-volume fs-volume --volume-source PersistentVolumeClaim --params claimName:standard --params readOnly:false
