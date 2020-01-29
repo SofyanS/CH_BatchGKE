@@ -4,8 +4,6 @@
 DEVSHELL_PROJECT_ID="REPLACE_PROJECTID" # Insert project ID. Sed it on the program script
 EMAIL="REPLACE_EMAIL" # Insert email. Sed it on the main program script
 
-gcloud auth login
-
 # Create regional cluster with workload identitiy enabled
 gcloud beta container clusters create hello-batch \
   --region us-central1 \

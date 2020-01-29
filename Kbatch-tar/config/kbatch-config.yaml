@@ -20,7 +20,7 @@ metadata:
   CompletedBatchJobCountLimit: 1000000
 autoscaler:
   ClusterName: hello-batch
-  ClusterLocation : us-central-1a
+  ClusterLocation : us-central11
   ProjectID: <kbatch-project-id>
   Recommender:
     Locations:
